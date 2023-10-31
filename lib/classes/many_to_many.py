@@ -11,7 +11,13 @@ class Coffee:
         return self._name
     @name.setter
     def name(self, new_name):
-        if isinstance(new_name, str) and len(new_name) >= 3 and not hasattr(self, 'name'):
+        if not isinstance(new_name, str):
+            raise Exception("Name must be a string")
+        elif len(new_name) < 3:
+            raise Exception("Name must have more than 3 characters")
+        elif hasattr(self, 'name'):
+            raise Exception("Name cannot be reset")
+        else:
             self._name = new_name
 
     def orders(self):
@@ -37,13 +43,27 @@ class Customer:
 
         type(self).all.append(self)
 
+    #bonus class method
+    # @classmethod
+    # def most_aficionado(cls, coffee):
+    #     top_price = max([order.price for order in Order.all if order.coffee is coffee])
+    #     if top_price:
+    #         customer_name = next(order.name for order in Order.all if order.price is top_price)
+    #         return next(customer for customer in cls.all if customer.name is customer_name)
+    #     else:
+    #         return None
+
     #name property
     @property
     def name(self):
         return self._name
     @name.setter
     def name(self, new_name):
-        if isinstance(new_name, str) and 1<= len(new_name) <= 15:
+        if not isinstance(new_name, str):
+            raise Exception("Name must be a string")
+        elif len(new_name) < 1 or len(new_name) > 15:
+            raise Exception("Improper length of name")
+        else:
             self._name = new_name
 
     def orders(self):
@@ -88,5 +108,11 @@ class Order:
         return self._price
     @price.setter
     def price(self, new_price):
-        if isinstance(new_price, float) and 1.0 <= new_price <= 10.0 and not hasattr(self, 'price'):
+        if not isinstance(new_price, float):
+            raise Exception("Price must be float")
+        elif new_price < 1.0 or new_price > 10.0:
+            raise Exception("Price not in range")
+        elif hasattr(self, 'price'):
+            raise Exception("Price cannot be reset")
+        else:
             self._price = new_price
